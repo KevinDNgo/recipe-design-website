@@ -66,7 +66,11 @@ export function RecipesView() {
             onSubmit={submitSearch}
           />
           <div className="filter-toolbar">
-            <div className="filter-pills" aria-label="Recipe filters">
+            <div
+              className="filter-pills"
+              role="group"
+              aria-label="Recipe filters"
+            >
               {filters.map((filter) => (
                 <button
                   key={filter.id}
@@ -88,15 +92,24 @@ export function RecipesView() {
               Recent queries
             </button>
           </div>
-          <section className="results-section" aria-live="polite">
+          <section className="results-section">
             <div className="section-heading">
               <h2>Featured Results</h2>
-              <span>{results.length} recipes</span>
+              <span aria-hidden="true">{results.length} recipes</span>
             </div>
+            <p className="visually-hidden" role="status" aria-live="polite">
+              {results.length === 1
+                ? "1 recipe result"
+                : `${results.length} recipe results`}
+            </p>
             {results.length > 0 ? (
               <div className="recipe-grid">
-                {results.map((recipe) => (
-                  <RecipeCard key={recipe.id} recipe={recipe} />
+                {results.map((recipe, index) => (
+                  <RecipeCard
+                    key={recipe.id}
+                    recipe={recipe}
+                    priority={index === 0}
+                  />
                 ))}
               </div>
             ) : (

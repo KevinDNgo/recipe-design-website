@@ -1,13 +1,25 @@
 import { useEffect, useId, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Brand } from "./Brand";
 import { ServerStatus } from "./ServerStatus";
 
 const navItems = [
-  { to: "/", label: "Recipes", end: true },
-  { to: "/ingredients", label: "Ingredient Explorer", end: false },
-  { to: "/console", label: "Console", end: false },
+  {
+    to: "/",
+    label: "Recipes",
+    isActive: (path: string) => path === "/" || path.startsWith("/recipes/"),
+  },
+  {
+    to: "/ingredients",
+    label: "Ingredient Explorer",
+    isActive: (path: string) => path === "/ingredients",
+  },
+  {
+    to: "/console",
+    label: "Console",
+    isActive: (path: string) => path === "/console",
+  },
 ];
 
 export function Header({ recipesOnly = false }: { recipesOnly?: boolean }) {
@@ -46,16 +58,19 @@ export function Header({ recipesOnly = false }: { recipesOnly?: boolean }) {
         className={menuOpen ? "primary-nav is-open" : "primary-nav"}
         aria-label="Primary navigation"
       >
-        {navItems.map((item) => (
-          <NavLink
-            key={item.to}
-            to={item.to}
-            end={item.end}
-            className={({ isActive }) => (isActive ? "active" : undefined)}
-          >
-            {item.label}
-          </NavLink>
-        ))}
+        {navItems.map((item) => {
+          const isActive = item.isActive(location.pathname);
+          return (
+            <Link
+              key={item.to}
+              to={item.to}
+              className={isActive ? "active" : undefined}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
       <ServerStatus />
     </header>

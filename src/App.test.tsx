@@ -73,6 +73,9 @@ describe("Savora app", () => {
     expect(
       screen.getByRole("heading", { name: "Step-by-Step Instructions" }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Recipes", current: "page" }),
+    ).toBeInTheDocument();
   });
 
   it("shows detail content for the selected recipe", async () => {
@@ -112,5 +115,55 @@ describe("Savora app", () => {
     expect(
       screen.queryByRole("heading", { name: "Fresh Garlic" }),
     ).not.toBeInTheDocument();
+  });
+
+  it("shows all ingredients before the user searches", async () => {
+    window.location.hash = "#/ingredients";
+    render(<App />);
+
+    expect(await screen.findByText("4 ingredient results")).toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(4);
+    expect(
+      screen.getByRole("searchbox", { name: "Search ingredients" }),
+    ).toHaveAttribute("placeholder", "Fresh Garlic");
+  });
+
+  it("renders the MCP console route", async () => {
+    window.location.hash = "#/console";
+    render(<App />);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "MCP Server Console",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("recipe_search")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Live Request Log" }),
+    ).toBeInTheDocument();
+  });
+
+  it("redirects an invalid recipe id to discovery", async () => {
+    window.location.hash = "#/recipes/not-a-recipe";
+    render(<App />);
+
+    expect(
+      await screen.findByRole("heading", {
+        level: 1,
+        name: "What's in your pantry today?",
+      }),
+    ).toBeInTheDocument();
+  });
+
+  it("locks and restores page scrolling with the history drawer", async () => {
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(screen.getByRole("button", { name: "Recent queries" }));
+    expect(document.body.style.overflow).toBe("hidden");
+
+    await user.keyboard("{Escape}");
+    expect(document.body.style.overflow).toBe("");
   });
 });

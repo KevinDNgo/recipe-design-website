@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - kevindngo-recipe-discovery-website
   workflow_dispatch:
 
 permissions:

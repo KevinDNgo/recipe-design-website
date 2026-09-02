@@ -19,12 +19,12 @@ export function RecipeDetailView() {
             className="detail-hero"
             src={details.heroImage}
             alt={details.imageAlt}
-            width="1248"
-            height="832"
+            width={details.imageWidth}
+            height={details.imageHeight}
             fetchPriority="high"
           />
           <h1>{recipe.title}</h1>
-          <div className="recipe-stats" aria-label="Recipe details">
+          <div className="recipe-stats" role="group" aria-label="Recipe details">
             <span>
               <img src={assetPath("clock.svg")} alt="" width="16" height="16" />
               Prep: <strong>{details.prepMinutes}m</strong> • Cook:{" "}
@@ -36,7 +36,9 @@ export function RecipeDetailView() {
               Servings: <strong>{details.servings}</strong>
             </span>
             <span className="stat-divider" aria-hidden="true" />
-            <span className="difficulty-pill">Easy Difficulty</span>
+            <span className="difficulty-pill">
+              {recipe.difficulty} Difficulty
+            </span>
           </div>
           <section className="instructions-section">
             <h2>Step-by-Step Instructions</h2>

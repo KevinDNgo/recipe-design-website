@@ -22,6 +22,15 @@ export function HistoryDrawer({
 
   useEffect(() => {
     if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousPaddingRight = document.body.style.paddingRight;
+    const documentWidth = document.documentElement.clientWidth;
+    const scrollbarWidth =
+      documentWidth > 0 ? Math.max(0, window.innerWidth - documentWidth) : 0;
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     previousFocusRef.current =
       document.activeElement instanceof HTMLElement
         ? document.activeElement
@@ -51,6 +60,8 @@ export function HistoryDrawer({
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      document.body.style.paddingRight = previousPaddingRight;
       previousFocusRef.current?.focus();
     };
   }, [onClose, open]);

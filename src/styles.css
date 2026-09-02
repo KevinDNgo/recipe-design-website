@@ -1,7 +1,7 @@
 :root {
   --ink: #1c1917;
   --muted: #6b6661;
-  --accent: #c95b32;
+  --accent: #b94f2a;
   --accent-bright: #d96b43;
   --success: #2e7d32;
   --border: #e2dcd5;
@@ -12,6 +12,7 @@
   --terminal: #171513;
   --terminal-line: #2e2824;
   --terminal-text: #e6dcd2;
+  --terminal-muted: #8f8780;
   --font-display: "Fraunces Variable", Georgia, serif;
   --font-sans: "Manrope", Arial, sans-serif;
   --font-mono: "JetBrains Mono", Consolas, monospace;
@@ -27,13 +28,11 @@
 }
 
 html {
-  min-width: 320px;
   min-height: 100%;
   background: var(--canvas);
 }
 
 body {
-  min-width: 320px;
   min-height: 100vh;
   margin: 0;
   background: var(--canvas);
@@ -1073,12 +1072,14 @@ td:last-child {
 }
 
 .code-card pre {
-  overflow-x: auto;
   margin: 16px 0 0;
   color: var(--terminal-text);
   font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .code-card code {
@@ -1205,7 +1206,7 @@ td:last-child {
 }
 
 .log-heading time {
-  color: var(--muted);
+  color: var(--terminal-muted);
 }
 
 .log-heading.response span {
@@ -1402,10 +1403,12 @@ td:last-child {
   }
 
   .filter-pills {
-    width: calc(100vw - 36px);
+    width: calc(100% + 36px);
+    max-width: calc(100% + 36px);
     flex-wrap: nowrap;
+    margin-inline: -18px;
     overflow-x: auto;
-    padding-bottom: 4px;
+    padding: 0 18px 4px;
     scrollbar-width: thin;
   }
 

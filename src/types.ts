@@ -49,6 +49,8 @@ export interface NutritionStat {
 export interface RecipeDetails {
   heroImage: string;
   imageAlt: string;
+  imageWidth: number;
+  imageHeight: number;
   prepMinutes: number;
   cookMinutes: number;
   servings: number;
